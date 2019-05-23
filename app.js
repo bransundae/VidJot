@@ -1,11 +1,13 @@
 //Imports
 const exphbs = require('express-handlebars');
 const express = require('express');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride  = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 
 const app = express();
@@ -43,8 +45,14 @@ const users = require('./routes/users');
     app.use(session({
         secret: 'secret',
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        store: new MongoStore({ mongooseConnection: mongoose.connection})
     }));
+
+    //Passport
+    require('./config/passport')(passport);
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     //Flash
     app.use(flash());
@@ -54,8 +62,11 @@ const users = require('./routes/users');
         res.locals.success_msg = req.flash('success_msg');
         res.locals.error_msg = req.flash('error_msg');
         res.locals.error = req.flash('error');
+        res.locals.user = req.user || null;
         next();
     });
+
+
 
 //Index Route
 app.get('/', (req, res) => {

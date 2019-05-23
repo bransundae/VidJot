@@ -18,6 +18,22 @@ router.get('/register', (req, res) => {
     res.render('users/register');
 });
 
+//Login User
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/ideas',
+        failureRedirect: '/users/login',
+        failureFlash: true,
+    })(req, res, next);
+});
+
+//Logout User
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', 'Logged out');
+    res.redirect('/users/login');
+});
+
 //Add User
 router.post('/register', (req, res) =>{
     let errors = [];
