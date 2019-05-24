@@ -18,8 +18,11 @@ const users = require('./routes/users');
 
 //Middleware
 
+    //DB Config
+    const db = require('./config/database');
+
     //Mongoose
-    mongoose.connect('mongodb://localhost/vidjot-dev', {
+    mongoose.connect(db.mongoURI, {
         useNewUrlParser: true
     })
     .then(() => console.log('MongoDB connected...'))
@@ -83,7 +86,7 @@ app.get('/about', (req, res) => {
 app.use('/ideas', ideas);
 app.use('/users', users);
 
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}...`)
