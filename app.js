@@ -21,11 +21,12 @@ const users = require('./routes/users');
     //DB Config
     const db = require('./config/database');
 
+    console.log(`DB URI STRING: ${db.mongoURI}`);
     //Mongoose
     mongoose.connect(db.mongoURI, {
         useNewUrlParser: true
     })
-    .then(() => console.log('MongoDB connected...'))
+    .then(() => console.log(`MongoDB connected...`))
     .catch(err => console.log(err));
 
     //Handlebars
