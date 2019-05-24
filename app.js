@@ -24,6 +24,7 @@ const users = require('./routes/users');
     console.log(`DB URI STRING: ${db.mongoURI}`);
     //Mongoose
     mongoose.connect(db.mongoURI, {
+        uri_decode_auth: true,
         useNewUrlParser: true
     })
     .then(() => console.log(`MongoDB connected...`))
